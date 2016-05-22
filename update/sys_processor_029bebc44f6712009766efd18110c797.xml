@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update table="sys_processor">
+    <sys_processor action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <class_name/>
+        <description/>
+        <interactive>false</interactive>
+        <name>getRoomsProcessor</name>
+        <parameters/>
+        <params_endpoint/>
+        <path>get_rooms</path>
+        <path_endpoint>x_snc_homenow_get_rooms</path_endpoint>
+        <require_csrf>false</require_csrf>
+        <roles/>
+        <script><![CDATA[(function process(g_request, g_response, g_processor) {
+
+var action = g_request.getParameter("action");
+	
+	var getRooms = new x_snc_homenow.getRooms();
+var response = getRooms.getRooms();
+	
+g_response.setHeader("Cache-Control", "no-store");
+g_response.setHeader("Pragma", "no-cache");
+// g_response.setCharacterEncoding('UTF-8');
+g_processor.writeOutput("application/json; charset=UTF-8", JSON.stringify(response));
+	
+})(g_request, g_response, g_processor);]]></script>
+        <sys_class_name>sys_processor</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2016-05-18 06:32:49</sys_created_on>
+        <sys_customer_update>true</sys_customer_update>
+        <sys_id>029bebc44f6712009766efd18110c797</sys_id>
+        <sys_mod_count>2</sys_mod_count>
+        <sys_name>getRoomsProcessor</sys_name>
+        <sys_package display_value="HomeNow" source="x_snc_homenow">9400b2404f2712009766efd18110c78c</sys_package>
+        <sys_policy/>
+        <sys_replace_on_upgrade>false</sys_replace_on_upgrade>
+        <sys_scope display_value="HomeNow">9400b2404f2712009766efd18110c78c</sys_scope>
+        <sys_update_name>sys_processor_029bebc44f6712009766efd18110c797</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2016-05-18 06:41:56</sys_updated_on>
+        <type>script</type>
+    </sys_processor>
+</record_update>

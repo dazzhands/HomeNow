@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<database>
+    <element label="Wire Trip" max_length="40" name="x_snc_homenow_wire_trip" type="collection">
+        <element label="Camera Name" max_length="40" name="camera_name" type="string"/>
+        <element label="Image Url" max_length="40" name="image_url" type="string"/>
+        <element label="In/Out" max_length="40" name="in_out" type="string"/>
+        <element label="Person Name" max_length="40" name="person_name" type="string"/>
+    </element>
+</database>

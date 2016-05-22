@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update table="sys_script_include">
+    <sys_script_include action="INSERT_OR_UPDATE">
+        <access>package_private</access>
+        <active>true</active>
+        <api_name>x_snc_homenow.WireTrip</api_name>
+        <client_callable>false</client_callable>
+        <description/>
+        <name>WireTrip</name>
+        <script><![CDATA[var WireTrip = Class.create();
+WireTrip.prototype = {
+	initialize: function() {
+		
+		this.YOUR_API_KEY='64c16eb64ce5a2f41475e7fb2ed0f119';
+		this.YOUR_API_SECRET='E0nYZbyj0NkNFYNq_R7BbiXaeRwZgLnO';
+	},
+	
+	processWireTrip: function( wireTripRecord ) {
+		
+		var knownPerson = new GlideRecord( 'x_snc_homenow_known_person' );
+		knownPerson.query();
+		
+		var person = this.identifyGroup( 'Family', wireTripRecord.image_url );
+		
+		if( person ) {
+			var room = new GlideRecord( 'x_snc_homenow_room' );
+			room.addQuery( 'name', wireTripRecord.camera_name );
+			room.query();
+			
+			if( room.next() ) {
+				
+			  if( wireTripRecord.in_out == 'IN' ) {
+			    // insert
+			 	room.people	+= person +'\n';
+
+			  } else {
+				// remove
+		  	    var regExp = new RegExp(person + '\n', 'g');
+				room.people = room.people.replace(regExp, '');
+			  }
+				
+				// save the change
+				room.update();
+			}
+			
+		} else {
+			// If not found
+			// Fire to xMatters
+			
+		}
+	
+		return found;
+	},
+	
+	
+	identifyGroup : function( groupName, imgURL ) {
+		
+		
+		var host = 'https://apius.faceplusplus.com';
+		var path = '/v2/recognition/identify';
+		
+		args = [];
+		
+		args.push( 'url='        + encodeURIComponent( imgURL ) );
+		args.push( 'api_secret=' + encodeURIComponent( this.YOUR_API_SECRET ) );
+		args.push( 'api_key='    + encodeURIComponent( this.YOUR_API_KEY ) );
+		args.push( 'group_name=' + encodeURIComponent( groupName ) );
+		
+		
+		var opts = {
+			"host": host,
+			"path": path + '?' + args.join( '&' ),
+			"method": 'GET'
+		};
+		
+		
+		gs.info( 'identifyPerson: opts: ' + (new global.JSON().encode( opts ) ) );
+		var resp = this.sendRequest( opts );
+		
+		
+		body = (new global.JSON().decode( resp.body ) );
+		
+		// gs.info( 'identifyPerson: response: ' + resp.body );
+		
+		var faces = body.face;
+		var candidates;
+		for( var i=0; i<faces.length; i++ ) {
+			
+			candidates = faces[i].candidate;  /// array of candidates
+			
+			for( j=0; j<candidates.length; j++ ) {
+				if( candidates[j].confidence > 10 ) {
+					gs.info( 'Found! ' + candidates[j].person_name );
+					return candidates[j].person_name;
+					
+				}
+			}
+		}
+		
+		return null;
+		
+	},
+	
+	
+	
+	sendRequest : function( opts ) {
+		
+		
+		var endpoint = opts.host + opts.path;
+		
+		// Build the RESTMessage.
+		var restMessage = new sn_ws.RESTMessageV2();
+		
+		// For some reason, the method MUST be in
+		// lowercase, or else we get an enum exception
+		restMessage.setHttpMethod( opts.method.toLowerCase() );
+		restMessage.setEndpoint( endpoint );
+		
+		if( opts.headers ) {
+			for( var item in opts.headers ) {
+				restMessage.setRequestHeader( item, opts.headers[item] );
+			}
+		}
+		
+		// If there is a body, check to see if it
+		// needs stringifying, otherwise, just add it.
+		if( opts.body ) {
+			if( typeof opts.body == 'object' )
+				body = new global.JSON().encode( opts.body );
+			
+			restMessage.setRequestBody( body );
+			
+		}
+		
+		
+		var response     = restMessage.execute();
+		var status       = response.getStatusCode();
+		var responseBody = response.haveError() ? response.getErrorMessage() : '';
+		responseBody     += response.getBody();
+		
+		var resp = { "status": status, "body": responseBody };
+		gs.info( 'sendRequest: request method: "' + opts.method.toLowerCase() + '" path: "' + opts.path + '" response: ' + new global.JSON().encode( resp ) );
+		
+		return resp;
+		
+	},
+	
+	
+	
+	type: 'WireTrip'
+};]]></script>
+        <sys_class_name>sys_script_include</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2016-05-18 05:00:56</sys_created_on>
+        <sys_customer_update>true</sys_customer_update>
+        <sys_id>e8b6d7004f6712009766efd18110c79e</sys_id>
+        <sys_mod_count>1</sys_mod_count>
+        <sys_name>WireTrip</sys_name>
+        <sys_package display_value="HomeNow" source="x_snc_homenow">9400b2404f2712009766efd18110c78c</sys_package>
+        <sys_policy>read</sys_policy>
+        <sys_replace_on_upgrade>false</sys_replace_on_upgrade>
+        <sys_scope display_value="HomeNow">9400b2404f2712009766efd18110c78c</sys_scope>
+        <sys_update_name>sys_script_include_e8b6d7004f6712009766efd18110c79e</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2016-05-18 05:19:30</sys_updated_on>
+    </sys_script_include>
+</record_update>

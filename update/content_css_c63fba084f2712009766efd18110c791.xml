@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update table="content_css">
+    <content_css action="INSERT_OR_UPDATE">
+        <name>HomeNow</name>
+        <style>.jumbotron {&#13;
+  padding: 18px;&#13;
+}&#13;
+.home-layout {&#13;
+    background-color: #fff;&#13;
+width: 100%;&#13;
+}&#13;
+.home-layout div {&#13;
+    border: 1px dotted gray;&#13;
+    margin: 0;&#13;
+position: relative;&#13;
+}&#13;
+.home-layout span {&#13;
+position: absolute;&#13;
+    display: inline-block;&#13;
+    color: gray;&#13;
+    font-size: 24px;&#13;
+    padding: 18px;&#13;
+    right: 0; &#13;
+    bottom: 0;&#13;
+}&#13;
+&#13;
+.kitchen, .family-room {&#13;
+    height: 300px;&#13;
+}&#13;
+.living-room, .dining-room {&#13;
+    height: 400px;&#13;
+}&#13;
+.foyer {&#13;
+    height: 800px;&#13;
+}&#13;
+.occupied {&#13;
+    background-color: lightcyan;&#13;
+}&#13;
+&#13;
+.person {&#13;
+padding: 15px;&#13;
+border: 0  !important;&#13;
+}&#13;
+&#13;
+i.fa-male {&#13;
+margin-right: 5px;&#13;
+}&#13;
+</style>
+        <sys_class_name>content_css</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2016-05-18 03:15:47</sys_created_on>
+        <sys_customer_update>true</sys_customer_update>
+        <sys_id>c63fba084f2712009766efd18110c791</sys_id>
+        <sys_mod_count>14</sys_mod_count>
+        <sys_name>HomeNow</sys_name>
+        <sys_package display_value="HomeNow" source="x_snc_homenow">9400b2404f2712009766efd18110c78c</sys_package>
+        <sys_policy/>
+        <sys_replace_on_upgrade>false</sys_replace_on_upgrade>
+        <sys_scope display_value="HomeNow">9400b2404f2712009766efd18110c78c</sys_scope>
+        <sys_update_name>content_css_c63fba084f2712009766efd18110c791</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2016-05-18 04:03:01</sys_updated_on>
+        <type>local</type>
+        <url/>
+    </content_css>
+</record_update>

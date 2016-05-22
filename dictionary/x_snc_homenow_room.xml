@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<database>
+    <element label="Room" max_length="40" name="x_snc_homenow_room" type="collection">
+        <element label="Name" max_length="40" name="name" type="string"/>
+        <element label="People" max_length="40" name="people" type="string"/>
+    </element>
+</database>
