@@ -9,17 +9,21 @@
         <name>WireTrip</name>
         <script><![CDATA[var WireTrip = Class.create();
 WireTrip.prototype = {
+	/**
+	 * set API credentials for facial recognitiation lookup
+	 */
 	initialize: function() {
-		
 		this.YOUR_API_KEY='64c16eb64ce5a2f41475e7fb2ed0f119';
 		this.YOUR_API_SECRET='E0nYZbyj0NkNFYNq_R7BbiXaeRwZgLnO';
 	},
 	
+	/**
+	 * Act on a wire trip in a given room and try to identify the occupant
+	 *
+	 * @param {wireTripRecord} containing the trip details
+	 * @return {bool} found
+	 */
 	processWireTrip: function( wireTripRecord ) {
-		
-		var knownPerson = new GlideRecord( 'x_snc_homenow_known_person' );
-		knownPerson.query();
-		
 		var person = this.identifyGroup( 'Family', wireTripRecord.image_url );
 		
 		if( person ) {
@@ -28,16 +32,15 @@ WireTrip.prototype = {
 			room.query();
 			
 			if( room.next() ) {
-				
-			  if( wireTripRecord.in_out == 'IN' ) {
-			    // insert
-			 	room.people	+= person +'\n';
-
-			  } else {
-				// remove
-		  	    var regExp = new RegExp(person + '\n', 'g');
-				room.people = room.people.replace(regExp, '');
-			  }
+				if( wireTripRecord.in_out == 'IN' ) {
+					// insert
+					room.people	+= person +'\n';
+					
+				} else {
+					// remove
+					var regExp = new RegExp(person + '\n', 'g');
+					room.people = room.people.replace(regExp, '');
+				}
 				
 				// save the change
 				room.update();
@@ -48,24 +51,29 @@ WireTrip.prototype = {
 			// Fire to xMatters
 			
 		}
-	
+		
 		return found;
 	},
 	
 	
+	/**
+	 * Check to see if face in an image can be matched to existing group
+	 *
+	 * We assume a successful match if confidence of the recognition is > 10
+	 *
+	 * @param {string} groupName of group of known faces to search
+	 * @param {string} imgURL of snapped image to examine
+	 * @return {string|null} name of recognized person, if found; otherwise, null
+	 */
 	identifyGroup : function( groupName, imgURL ) {
-		
-		
 		var host = 'https://apius.faceplusplus.com';
 		var path = '/v2/recognition/identify';
-		
-		args = [];
-		
+
+		var args = [];
 		args.push( 'url='        + encodeURIComponent( imgURL ) );
 		args.push( 'api_secret=' + encodeURIComponent( this.YOUR_API_SECRET ) );
 		args.push( 'api_key='    + encodeURIComponent( this.YOUR_API_KEY ) );
 		args.push( 'group_name=' + encodeURIComponent( groupName ) );
-		
 		
 		var opts = {
 			"host": host,
@@ -73,39 +81,35 @@ WireTrip.prototype = {
 			"method": 'GET'
 		};
 		
-		
 		gs.info( 'identifyPerson: opts: ' + (new global.JSON().encode( opts ) ) );
 		var resp = this.sendRequest( opts );
 		
-		
-		body = (new global.JSON().decode( resp.body ) );
+		body = ( new global.JSON().decode( resp.body ) );
 		
 		// gs.info( 'identifyPerson: response: ' + resp.body );
 		
 		var faces = body.face;
 		var candidates;
 		for( var i=0; i<faces.length; i++ ) {
-			
 			candidates = faces[i].candidate;  /// array of candidates
 			
 			for( j=0; j<candidates.length; j++ ) {
 				if( candidates[j].confidence > 10 ) {
 					gs.info( 'Found! ' + candidates[j].person_name );
 					return candidates[j].person_name;
-					
 				}
 			}
 		}
 		
 		return null;
-		
 	},
 	
-	
-	
+	/**
+	 * Send a request to facial recognition endpoint and return response
+	 * @param {object} opts for request
+	 * @return {object} response containing status and responseBody from remote endpoint
+	 */
 	sendRequest : function( opts ) {
-		
-		
 		var endpoint = opts.host + opts.path;
 		
 		// Build the RESTMessage.
@@ -129,9 +133,7 @@ WireTrip.prototype = {
 				body = new global.JSON().encode( opts.body );
 			
 			restMessage.setRequestBody( body );
-			
 		}
-		
 		
 		var response     = restMessage.execute();
 		var status       = response.getStatusCode();
@@ -142,9 +144,7 @@ WireTrip.prototype = {
 		gs.info( 'sendRequest: request method: "' + opts.method.toLowerCase() + '" path: "' + opts.path + '" response: ' + new global.JSON().encode( resp ) );
 		
 		return resp;
-		
 	},
-	
 	
 	
 	type: 'WireTrip'
@@ -154,7 +154,7 @@ WireTrip.prototype = {
         <sys_created_on>2016-05-18 05:00:56</sys_created_on>
         <sys_customer_update>true</sys_customer_update>
         <sys_id>e8b6d7004f6712009766efd18110c79e</sys_id>
-        <sys_mod_count>1</sys_mod_count>
+        <sys_mod_count>3</sys_mod_count>
         <sys_name>WireTrip</sys_name>
         <sys_package display_value="HomeNow" source="x_snc_homenow">9400b2404f2712009766efd18110c78c</sys_package>
         <sys_policy>read</sys_policy>
@@ -162,6 +162,6 @@ WireTrip.prototype = {
         <sys_scope display_value="HomeNow">9400b2404f2712009766efd18110c78c</sys_scope>
         <sys_update_name>sys_script_include_e8b6d7004f6712009766efd18110c79e</sys_update_name>
         <sys_updated_by>admin</sys_updated_by>
-        <sys_updated_on>2016-05-18 05:19:30</sys_updated_on>
+        <sys_updated_on>2016-05-22 23:42:51</sys_updated_on>
     </sys_script_include>
 </record_update>

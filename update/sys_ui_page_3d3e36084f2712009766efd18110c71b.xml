@@ -5,17 +5,16 @@
         <client_script/>
         <description/>
         <direct>true</direct>
-        <endpoint>x_snc_homenow_HomeNow2.do</endpoint>
+        <endpoint>x_snc_homenow_HomeNow.do</endpoint>
         <html><![CDATA[<?xml version="1.0" encoding="utf-8" ?>
 <j:jelly trim="false" xmlns:j="jelly:core" xmlns:g="glide" xmlns:j2="null" xmlns:g2="null">
-<link href="c63fba084f2712009766efd18110c791.cssdbx" rel="stylesheet" type="text/css"></link>  
-<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css"></link>
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css"></link>
 	
-	<script language="javascript" src="x_snc_homenow.Angular_1_3_framework.jsdbx" />
+	<link rel="stylesheet" href="c63fba084f2712009766efd18110c791.cssdbx" />
+	<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" />
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" />
 	
-<script language="javascript" src="x_snc_homenow.app_angular_HomeNow.jsdbx" />
-<script language="javascript" src="service.sn-glideAjax.jsdbx" />
+	<script language="javascript" src="x_snc_homenow.Angular_1_5_framework.jsdbx" />
+	<script language="javascript" src="x_snc_homenow.app_angular_HomeNow.jsdbx" />
 	
 <div ng-app="xmHomeNow">
 <div class="jumbotron">
@@ -68,21 +67,21 @@
 </div>
 </div>
 </j:jelly>]]></html>
-        <name>HomeNow2</name>
+        <name>HomeNow</name>
         <processing_script/>
         <sys_class_name>sys_ui_page</sys_class_name>
         <sys_created_by>admin</sys_created_by>
         <sys_created_on>2016-05-18 03:12:14</sys_created_on>
         <sys_customer_update>true</sys_customer_update>
         <sys_id>3d3e36084f2712009766efd18110c71b</sys_id>
-        <sys_mod_count>27</sys_mod_count>
-        <sys_name>HomeNow2</sys_name>
+        <sys_mod_count>33</sys_mod_count>
+        <sys_name>HomeNow</sys_name>
         <sys_package display_value="HomeNow" source="x_snc_homenow">9400b2404f2712009766efd18110c78c</sys_package>
         <sys_policy/>
         <sys_replace_on_upgrade>false</sys_replace_on_upgrade>
         <sys_scope display_value="HomeNow">9400b2404f2712009766efd18110c78c</sys_scope>
         <sys_update_name>sys_ui_page_3d3e36084f2712009766efd18110c71b</sys_update_name>
         <sys_updated_by>admin</sys_updated_by>
-        <sys_updated_on>2016-05-18 07:14:51</sys_updated_on>
+        <sys_updated_on>2016-05-23 00:28:48</sys_updated_on>
     </sys_ui_page>
 </record_update>

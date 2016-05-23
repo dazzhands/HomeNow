@@ -5,49 +5,57 @@
         <description/>
         <global>false</global>
         <name>x_snc_homenow.app_angular_HomeNow</name>
-        <script><![CDATA[angular.module( 'xmHomeNow', ['sn.glideAjax']);
-angular.module('xmHomeNow').controller('HomeCtrl', ['$scope', '$interval', '$http', function ($scope, $interval, $http) {
-   $scope.rooms = {
-     FamilyRoom: [],
-     Kitchen: [],
-     Foyer: [],
-     DiningRoom: [],
-     LivingRoom: []
-   };
-	$interval(function() {
-		$http({
-			method: 'get',
-			url: 'x_snc_homenow_get_rooms.do',
-			headers: {
-				'Content-Type': 'application/json'
-			}
-		})
-		.then(function(data) {
-			$scope.rooms = data.data;
-			//$scope.$apply();
+        <script><![CDATA[(function () {
+	'use strict';
+	
+	var xmHomeNow = angular.module( 'xmHomeNow', []);
+	
+	xmHomeNow.constant('HomeConst', {
+		refreshRate: 10000 // update view every 10 seconds
+	});
+	
+	xmHomeNow.service('Home', ['$http', function ($http) {
+		this.getRooms = function () {
+			return $http({
+				method: 'get',
+				url: 'x_snc_homenow_get_rooms.do',
+				headers: {
+					'Content-Type': 'application/json'
+				}
+			})
+			.then(function (response) {
+				return response.data;
+			});
+		};
+	}]);
+	
+	xmHomeNow.controller('HomeCtrl', ['$scope', '$interval', 'Home', 'HomeConst', function ($scope, $interval, Home, HomeConst) {
+		function updateRooms() {
+			Home.getRooms()
+			.then(function (rooms) {
+				$scope.rooms = rooms;
+			});
+		}
+		updateRooms();
+		
+		var intervalPromise = $interval(function() {
+			updateRooms();
+		}, HomeConst.refreshRate);
+		
+		$scope.$on('$destroy', function () {
+			$interval.cancel(intervalPromise);
 		});
-	}, 2000);
-}]);
-
-angular.module('sn.glideAjax', []).service('GlideAjax', function($rootScope) {
-    var glideAjax = window.GlideAjax;
-    glideAjax.prototype.getJSON = function(callback) {
-        this.getXMLAnswer(function(answer) {
-            var answerJSON = JSON.parse(answer);
-            callback(answerJSON);
-            $rootScope.$apply();
-            });
-    };
- 
-    return glideAjax;
-});]]></script>
+	}]);
+	
+})();
+]]></script>
         <script_name>app_angular_HomeNow</script_name>
         <sys_class_name>sys_ui_script</sys_class_name>
         <sys_created_by>admin</sys_created_by>
         <sys_created_on>2016-05-18 02:44:52</sys_created_on>
         <sys_customer_update>true</sys_customer_update>
         <sys_id>f8e772444f2712009766efd18110c732</sys_id>
-        <sys_mod_count>33</sys_mod_count>
+        <sys_mod_count>54</sys_mod_count>
         <sys_name>x_snc_homenow.app_angular_HomeNow</sys_name>
         <sys_package display_value="HomeNow" source="x_snc_homenow">9400b2404f2712009766efd18110c78c</sys_package>
         <sys_policy/>
@@ -55,7 +63,7 @@ angular.module('sn.glideAjax', []).service('GlideAjax', function($rootScope) {
         <sys_scope display_value="HomeNow">9400b2404f2712009766efd18110c78c</sys_scope>
         <sys_update_name>sys_ui_script_f8e772444f2712009766efd18110c732</sys_update_name>
         <sys_updated_by>admin</sys_updated_by>
-        <sys_updated_on>2016-05-18 07:09:52</sys_updated_on>
+        <sys_updated_on>2016-05-23 01:20:15</sys_updated_on>
         <use_scoped_format>false</use_scoped_format>
     </sys_ui_script>
 </record_update>
